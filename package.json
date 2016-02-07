@@ -1,6 +1,6 @@
 {
   "name": "mach-storeobj",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/dottgonzo/storejs#readme",
   "dependencies": {
     "json-add": "0.0.8",
-    "linux-online-status": "0.0.11"
+    "linux-online-status": "0.0.12"
   },
   "devDependencies": {
     "chai": "^3.5.0",
