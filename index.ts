@@ -120,7 +120,19 @@ export = class StoreApi {
     system: IOnlineAnswer;
 
     constructor(components: IComponents[], serial: string, timezone: string) {
-        this.timezone = timezone;
+
+        if (!components) {
+            throw Error("missing object");
+        } else if (!serial) {
+            throw Error("missing uid");
+        }
+        if (!timezone) {
+            this.timezone = "Europe/London";
+        } else {
+            this.timezone = timezone;
+        }
+
+
         this.serial = serial;
         this.components = components;
         let sys = this.system;
@@ -159,6 +171,12 @@ export = class StoreApi {
 
 
     data(obj: any, uid: string): IObject {
+        if (!obj) {
+            throw Error("missing object");
+        } else if (!uid) {
+            throw Error("missing uid");
+        }
+
 
         objectessentials(obj, this.serial);
 
@@ -171,6 +189,11 @@ export = class StoreApi {
         }
 
         return obj;
+
+    }
+
+    new() {
+
     }
 }
 
