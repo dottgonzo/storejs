@@ -192,8 +192,15 @@ export = class StoreApi {
 
     }
 
-    new() {
-
+    new(uid: string) {
+        let obj = <IObject>{};
+        objectessentials(obj, this.serial);
+        for (let i in this.components) {
+            if (this.components[i].uid === uid) {
+                obj._id = this.components[i].type + "_" + uid + "_" + obj.updatedAt;
+            }
+        }
+        return obj;
     }
 }
 
