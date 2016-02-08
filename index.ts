@@ -193,6 +193,9 @@ export = class StoreApi {
     }
 
     new(uid: string) {
+        if (!uid) {
+            throw Error("missing uid");
+        }
         let obj = <IObject>{};
         objectessentials(obj, this.serial);
         for (let i in this.components) {
