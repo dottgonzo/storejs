@@ -196,14 +196,15 @@ export = class StoreApi {
         if (!uid) {
             throw Error("missing uid");
         }
-        let obj = <IObject>{};
-        objectessentials(obj, this.serial);
+        let defaultobj = <IObject>{};
+
+        objectessentials(defaultobj, this.serial);
         for (let i in this.components) {
             if (this.components[i].uid === uid) {
-                obj._id = this.components[i].type + "_" + uid + "_" + obj.updatedAt;
+                defaultobj._id = this.components[i].type + "_" + uid + "_" + defaultobj.updatedAt;
             }
         }
-        return obj;
+        return defaultobj;
     }
 }
 
