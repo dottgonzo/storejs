@@ -30,7 +30,12 @@ interface Isensor {
     exec: Promise<any>
     format: Function;
 }
-
+interface IConfsensor {
+    label: string;
+    counters: Icounter[];
+    sum: ISum[];
+    exec: Promise<any>
+}
 interface IComponents {
     label: string;
     uid: string;
@@ -39,7 +44,11 @@ interface IComponents {
     create: Function;
 }
 
-
+interface IConfComponents {
+    label: string;
+    uid: string;
+    measures: IConfsensor[];
+}
 
 function TimeNow() {
     return new Date().getTime();
@@ -59,10 +68,10 @@ function objectessentials(obj, serial): {} {
 export = class StoreApi {
     timezone: string;
     serial: string;
-    sensors: IComponents[] = [];
+    sensors: IConfComponents[] = [];
 
 
-    constructor(sensors: IComponents[], serial: string, timezone: string) {
+    constructor(sensors: IConfComponents[], serial: string, timezone: string) {
 
         if (!sensors) {
             throw Error("missing object");
@@ -79,16 +88,17 @@ export = class StoreApi {
         this.serial = serial;
         this.sensors = sensors;
         for (var i in this.sensors) {
+            for (var m in this.sensors[i].measures) {
+                this.sensors[i].measures[m].format = function(tag, obj) { 
 
-            this.sensors[i].measures.format = function(tag, obj) { // to be continued
+                    if (!tag) {
+                        throw Error("missing something");
+                    }
 
-                if (!tag) {
-                    throw Error("missing something");
+                    objectessentials(obj, this.serial);
+                    obj._id = tag + "_" + this.sensors[i].uid + "_" + obj.updatedAt;
+                    return obj
                 }
-
-                objectessentials(obj, this.serial);
-                obj._id = tag + "_" + this.sensors[i].uid + "_" + obj.updatedAt;
-                return obj
             }
             this.sensors[i].create = function(tag) {
                 if (!tag) {
