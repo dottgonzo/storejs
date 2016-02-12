@@ -13,21 +13,29 @@ enum ETimers {
 
 }
 
+interface Icounter {
+    label: string;
+    keys: string[];
+    timer: ETimers;
+}
+interface ISum {
+    label: string;
+    keys: string[];
+    timer: ETimers;
+}
+interface Isensor {
+    label: string;
+    counters: Icounter[];
+    sum: ISum[];
+    exec: Promise<any>
+    format: Function;
+}
+
 interface IComponents {
     label: string;
     uid: string;
-    tags: string[];
-    counters?: {
-        tag: string;
-        key: string;
-        timer: ETimers;
-    };
-    sum?: {
-        type: string;
-        key: string;
-        timer: ETimers;
-    };
-    data: Function;
+    measures: Isensor[];
+
     create: Function;
 }
 
@@ -72,7 +80,7 @@ export = class StoreApi {
         this.sensors = sensors;
         for (var i in this.sensors) {
 
-            this.sensors[i].data = function(tag, obj) {
+            this.sensors[i].measures.format = function(tag, obj) { // to be continued
 
                 if (!tag) {
                     throw Error("missing something");
@@ -120,27 +128,21 @@ export = class StoreApi {
 
 
     sensor(uid: string) {
-        
+
         let sensor = <IComponents>{};
         for (let i = 0; i < this.sensors.length; i++) {
             if (this.sensors[i].uid === uid) {
 
                 sensor = this.sensors[i];
             }
-
-
         }
 
         if (!sensor.uid) {
             throw Error("no sensor founded")
         } else {
-
-
             return sensor
 
         }
-
-
 
     }
 
